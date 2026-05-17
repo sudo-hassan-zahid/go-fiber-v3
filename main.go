@@ -15,7 +15,14 @@ func main() {
 		ForceColors: true,
 	}))
 
+	app.Get("/hello", func(c fiber.Ctx) error {
+		return c.JSON(fiber.Map{
+			"message": "Hello, World!",
+		})
+	})
+
 	if err := app.Listen(":8080"); err != nil {
 		panic(err)
 	}
+
 }
