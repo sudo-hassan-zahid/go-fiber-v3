@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fiber-v3/internal/routes"
+
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/logger"
 )
@@ -15,14 +17,8 @@ func main() {
 		ForceColors: true,
 	}))
 
-	app.Get("/hello", func(c fiber.Ctx) error {
-		return c.JSON(fiber.Map{
-			"message": "Hello, World!",
-		})
-	})
+	routes.InitRoutes(app)
 
-	if err := app.Listen(":8080"); err != nil {
-		panic(err)
-	}
+	app.Listen(":8080")
 
 }
