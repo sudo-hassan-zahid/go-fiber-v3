@@ -1,9 +1,18 @@
 package routes
 
-import "github.com/gofiber/fiber/v3"
+import (
+	"fiber-v3/internal/handlers"
+
+	"github.com/gofiber/fiber/v3"
+)
 
 func InitRoutes(app *fiber.App) {
-	v1 := app.Group("/api/v1")
+	api := app.Group("/api")
+	healthGroup := api.Group("/health")
+	healthGroup.Get("/", handlers.HealthCheck)
+	healthGroup.Get("/db", handlers.DBHealthCheck)
+
+	v1 := api.Group("/v1")
 
 	v1.Get("/hello", func(c fiber.Ctx) error {
 		return c.JSON(fiber.Map{

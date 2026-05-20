@@ -1,9 +1,12 @@
 package database
 
 import (
+	"context"
 	"fiber-v3/internal/config"
+	"fiber-v3/internal/errors"
 	"fmt"
 	"log"
+	"time"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -28,4 +31,20 @@ func Connect() {
 	}
 
 	DB = db
+}
+
+func Health() error {
+	if DB == nil {
+		return errors.ErrDBNotInitialized
+	}
+
+	sqlDB, err := DB.DB()
+	if err != nil {
+		return err
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+
+	return sqlDB.PingContext(ctx)
 }
