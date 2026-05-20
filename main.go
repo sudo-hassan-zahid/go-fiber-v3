@@ -16,6 +16,9 @@ import (
 	"github.com/gofiber/fiber/v3/middleware/logger"
 )
 
+// @title 				Fiber API
+// @version 			1.0
+// @description 		This is a sample API
 func main() {
 	config.Init()
 	cfg := config.GetConfig()

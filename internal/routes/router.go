@@ -3,6 +3,9 @@ package routes
 import (
 	"fiber-v3/internal/handlers"
 
+	_ "fiber-v3/docs"
+
+	swaggo "github.com/gofiber/contrib/v3/swaggo"
 	"github.com/gofiber/fiber/v3"
 )
 
@@ -11,12 +14,5 @@ func InitRoutes(app *fiber.App) {
 	healthGroup := api.Group("/health")
 	healthGroup.Get("/", handlers.HealthCheck)
 	healthGroup.Get("/db", handlers.DBHealthCheck)
-
-	v1 := api.Group("/v1")
-
-	v1.Get("/hello", func(c fiber.Ctx) error {
-		return c.JSON(fiber.Map{
-			"message": "Hello, World!",
-		})
-	})
+	api.Get("/swagger/*", swaggo.HandlerDefault)
 }
