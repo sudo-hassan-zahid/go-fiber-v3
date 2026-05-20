@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fiber-v3/internal/config"
 	"fiber-v3/internal/routes"
+	"log"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/logger"
@@ -17,8 +19,13 @@ func main() {
 		ForceColors: true,
 	}))
 
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	routes.InitRoutes(app)
 
-	app.Listen(":8080")
+	app.Listen(":" + cfg.Port)
 
 }
