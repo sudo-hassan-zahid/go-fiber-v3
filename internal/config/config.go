@@ -17,17 +17,18 @@ type DBConfig struct {
 type Config struct {
 	Port        string
 	Environment string
-	DBConfig    DBConfig
+	DB          DBConfig
 }
 
-func LoadConfig() (*Config, error) {
-	if err := godotenv.Load(".env"); err != nil {
-		return nil, err
-	}
-	cfg := &Config{
+var cfg *Config
+
+func Init() {
+	_ = godotenv.Load()
+
+	cfg = &Config{
 		Port:        os.Getenv("PORT"),
-		Environment: os.Getenv("ENVIRONMENT"),
-		DBConfig: DBConfig{
+		Environment: os.Getenv("ENV"),
+		DB: DBConfig{
 			DBUser:     os.Getenv("DB_USER"),
 			DBPassword: os.Getenv("DB_PASSWORD"),
 			DBHost:     os.Getenv("DB_HOST"),
@@ -35,6 +36,11 @@ func LoadConfig() (*Config, error) {
 			DBName:     os.Getenv("DB_NAME"),
 		},
 	}
+}
 
-	return cfg, nil
+func GetConfig() *Config {
+	if cfg == nil {
+		panic("config not initialized - call config.Init() first")
+	}
+	return cfg
 }

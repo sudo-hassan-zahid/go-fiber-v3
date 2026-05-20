@@ -2,14 +2,20 @@ package main
 
 import (
 	"fiber-v3/internal/config"
+	"fiber-v3/internal/database"
 	"fiber-v3/internal/routes"
-	"log"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/logger"
 )
 
 func main() {
+	config.Init()
+
+	cfg := config.GetConfig()
+
+	database.Connect()
+
 	app := fiber.New(fiber.Config{
 		AppName: "API Server",
 	})
@@ -18,11 +24,6 @@ func main() {
 		Format:      "[${time}] ${status} - ${method} ${path}\n",
 		ForceColors: true,
 	}))
-
-	cfg, err := config.LoadConfig()
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	routes.InitRoutes(app)
 
