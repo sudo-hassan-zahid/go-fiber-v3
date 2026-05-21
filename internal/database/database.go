@@ -4,6 +4,7 @@ import (
 	"context"
 	"fiber-v3/internal/config"
 	"fiber-v3/internal/errors"
+	"fiber-v3/internal/models"
 	"fmt"
 	"log"
 	"time"
@@ -31,6 +32,17 @@ func Connect() {
 	}
 
 	DB = db
+}
+
+func Migrate() {
+	err := DB.AutoMigrate(
+		&models.User{},
+		&models.Tokens{},
+	)
+
+	if err != nil {
+		log.Fatal("Failed to migrate database:", err)
+	}
 }
 
 func Health() error {
