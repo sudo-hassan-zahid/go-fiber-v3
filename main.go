@@ -24,6 +24,7 @@ func main() {
 	cfg := config.GetConfig()
 
 	database.Connect()
+	database.Migrate()
 
 	app := fiber.New(fiber.Config{
 		AppName: "API Server - Mode: " + cfg.Environment,
